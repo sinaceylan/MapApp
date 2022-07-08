@@ -1,0 +1,36 @@
+[
+  {
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#2c5a71"
+      }
+    ]
+  },
+  {
+    "elementType": "labels",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#366982"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#193341"
+      }
+    ]
+  }
+]
