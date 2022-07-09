@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog_bg">
+
+    <TextView
+        android:id="@+id/choosetxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Map Settings"
+        android:textColor="@color/black"
+        android:layout_marginTop="5dp"
+        android:textSize="25dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="5dp"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/dark_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:drawableTop="@drawable/map_dark"
+            android:text="Dark"
+            android:textColor="@color/black"
+            />
+
+        <Button
+            android:id="@+id/ligth_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:text="Light"
+            android:textColor="@color/black"
+            android:drawableTop="@drawable/map_light"
+            android:gravity="center"
+            />
+
+        <Button
+            android:id="@+id/hybrid_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:text="Hybrid"
+            android:textColor="@color/black"
+            android:drawableTop="@drawable/map_satellite"
+            android:gravity="center"
+            />
+
+        <Button
+            android:id="@+id/satellite_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:drawableTop="@drawable/map_satellite"
+            android:gravity="center"
+            android:text="Satellite"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

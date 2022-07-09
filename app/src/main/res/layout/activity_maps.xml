@@ -14,48 +14,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mapTypeLayout" />
+         />
 
 
-    <LinearLayout
-        android:id="@+id/mapTypeLayout"
-        android:layout_width="409dp"
-        android:layout_height="56dp"
-        android:layout_margin="05dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/buttonHybrid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="05dp"
-            android:text="Hybrid" />
 
-        <Button
-            android:id="@+id/buttonSattelite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="05dp"
-            android:text="Sattalite" />
-
-        <Button
-            android:id="@+id/buttonNightMode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="05dp"
-            android:text="Dark" />
-
-        <Button
-            android:id="@+id/buttonLightMode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="05dp"
-            android:text="Light" />
-
-    </LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/botttom_sheet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="83dp"
+        android:layout_marginEnd="0dp"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_baseline_menu_24" />
 
 
 </RelativeLayout>
