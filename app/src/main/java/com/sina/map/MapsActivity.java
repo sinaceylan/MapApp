@@ -1,5 +1,6 @@
 package com.sina.map;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -8,8 +9,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.Toast;
+import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.Switch;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -22,6 +24,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sina.map.databinding.ActivityMapsBinding;
+
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -42,6 +45,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         bottomsheet = findViewById(R.id.botttom_sheet);
 
         bottomsheet.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("UseSwitchCompatOrMaterialCode")
             @Override
             public void onClick(View v) {
 
@@ -49,48 +53,72 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.bottomsheetlayout);
 
-                Button darkButton = dialog.findViewById(R.id.dark_button);
-                Button hybridButton = dialog.findViewById(R.id.hybrid_button);
-                Button lightButton = dialog.findViewById(R.id.ligth_button);
-                Button satelitteButton = dialog.findViewById(R.id.satellite_button);
+                ImageButton darkButton = dialog.findViewById(R.id.dark_button);
+                ImageButton hybridButton = dialog.findViewById(R.id.hybrid_button);
+                ImageButton lightButton = dialog.findViewById(R.id.ligth_button);
+                ImageButton satelitteButton = dialog.findViewById(R.id.satellite_button);
+                Switch swbutton = dialog.findViewById(R.id.switch_button);
 
                 darkButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialog.dismiss();
+
+                        darkButton.setBackground(getResources().getDrawable(R.drawable.on_item_select));
                         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_dark_no_label));
-                        Toast.makeText(MapsActivity.this,"Dark is Clicked",Toast.LENGTH_SHORT).show();
 
+                        swbutton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                                if(isChecked){
+                                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_dark_with_labels));
+                                }else{
+                                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_dark_no_label));
+                                }
+                            }
+                        });
                     }
                 });
 
                 lightButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialog.dismiss();
+
+                        lightButton.setBackground(getResources().getDrawable(R.drawable.on_item_select));
                         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_light_no_label));
-                        Toast.makeText(MapsActivity.this,"Light is Clicked",Toast.LENGTH_SHORT).show();
+
+                        swbutton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                if(isChecked){
+                                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_light_with_labels));
+                                }else{
+                                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_light_no_label));
+                                }
+                            }
+                        });
                     }
                 });
 
                 hybridButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialog.dismiss();
-                        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-                        Toast.makeText(MapsActivity.this,"Hybrid is Clicked",Toast.LENGTH_SHORT).show();
+                        hybridButton.setBackground(getResources().getDrawable(R.drawable.on_item_select));
 
+                        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                        //Toast.makeText(MapsActivity.this,"Hybrid is Clicked",Toast.LENGTH_SHORT).show();
                     }
                 });
 
                 satelitteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialog.dismiss();
+                        satelitteButton.setBackground(getResources().getDrawable(R.drawable.on_item_select));
+
                         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                        Toast.makeText(MapsActivity.this,"Satelitte is Clicked",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MapsActivity.this,"Satelitte is Clicked",Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -101,9 +129,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 dialog.getWindow().setGravity(Gravity.BOTTOM);
             }
         });
+
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
 
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -111,7 +141,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Current Position"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,12));
     }

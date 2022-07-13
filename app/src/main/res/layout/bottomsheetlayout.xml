@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,47 +26,49 @@
         android:orientation="horizontal">
 
 
-        <Button
+        <ImageButton
             android:id="@+id/dark_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:drawableTop="@drawable/map_dark"
-            android:text="Dark"
-            android:textColor="@color/black"
+            android:src="@drawable/map_dark"
+            android:background="@color/white"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
             />
 
-        <Button
+
+        <ImageButton
             android:id="@+id/ligth_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:text="Light"
-            android:textColor="@color/black"
-            android:drawableTop="@drawable/map_light"
-            android:gravity="center"
+            android:src="@drawable/map_light"
+            android:background="@color/white"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
             />
 
-        <Button
+        <ImageButton
             android:id="@+id/hybrid_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:text="Hybrid"
-            android:textColor="@color/black"
-            android:drawableTop="@drawable/map_satellite"
-            android:gravity="center"
+            android:src="@drawable/map_satellite"
+            android:background="@color/white"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
             />
 
-        <Button
+        <ImageButton
             android:id="@+id/satellite_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:drawableTop="@drawable/map_satellite"
-            android:gravity="center"
-            android:text="Satellite"
-            android:textColor="@color/black" />
+            android:background="@color/white"
+            android:src="@drawable/map_satellite"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            />
 
     </LinearLayout>
 
@@ -74,11 +77,49 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dark"
+            android:layout_marginLeft ="34dp"
+            android:textColor="@color/black"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Light"
+            android:layout_marginLeft="67dp"
+            android:textColor="@color/black"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hybrid"
+            android:layout_marginLeft="60dp"
+            android:textColor="@color/black"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Satellite"
+            android:layout_marginLeft="50dp"
+            android:textColor="@color/black"
+            />
 
 
     </LinearLayout>
+
+    <Switch
+        android:id="@+id/switch_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="   Show Labels"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="30dp"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
 
 </LinearLayout>
