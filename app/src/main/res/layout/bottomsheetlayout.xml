@@ -16,7 +16,7 @@
         android:layout_marginTop="5dp"
         android:textSize="25dp"
         android:layout_marginBottom="20dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="7dp"
         android:textStyle="bold"/>
 
     <LinearLayout
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/map_dark"
             android:background="@color/white"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
             />
@@ -78,31 +78,35 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/dark_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dark"
-            android:layout_marginLeft ="34dp"
+            android:layout_marginLeft ="25dp"
             android:textColor="@color/black"
             />
         <TextView
+            android:id="@+id/light_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Light"
+            android:layout_marginLeft="72dp"
+            android:textColor="@color/black"
+            />
+        <TextView
+            android:id="@+id/hybrid_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hybrid"
             android:layout_marginLeft="67dp"
             android:textColor="@color/black"
             />
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hybrid"
-            android:layout_marginLeft="60dp"
-            android:textColor="@color/black"
-            />
-        <TextView
+            android:id="@+id/satelitte_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Satellite"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="55dp"
             android:textColor="@color/black"
             />
 
