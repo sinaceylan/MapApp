@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -19,8 +20,7 @@
         android:layout_marginLeft="7dp"
         android:textStyle="bold"/>
 
-    <LinearLayout
-
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -30,85 +30,89 @@
             android:id="@+id/dark_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/map_dark"
+            android:layout_marginTop="8dp"
             android:background="@color/white"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            />
+            android:src="@drawable/map_dark"
+            app:layout_constraintEnd_toStartOf="@+id/ligth_button"
+            app:layout_constraintHorizontal_bias="0.62"
+            app:layout_constraintRight_toLeftOf="@+id/ligth_button"
 
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
 
         <ImageButton
             android:id="@+id/ligth_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
             android:src="@drawable/map_light"
-            android:background="@color/white"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            />
-
-        <ImageButton
-            android:id="@+id/hybrid_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/map_satellite"
-            android:background="@color/white"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/satellite_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
 
         <ImageButton
             android:id="@+id/satellite_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:background="@color/white"
             android:src="@drawable/map_satellite"
-            android:layout_marginLeft="20dp"
-            android:layout_marginBottom="10dp"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.40"
+            app:layout_constraintStart_toEndOf="@+id/ligth_button"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/dark_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dark"
-            android:layout_marginLeft ="25dp"
             android:textColor="@color/black"
-            />
+            app:layout_constraintEnd_toStartOf="@+id/light_textView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.510"
+            app:layout_constraintTop_toBottomOf="@+id/dark_button"
+            tools:ignore="MissingConstraints" />
+
         <TextView
             android:id="@+id/light_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Light"
-            android:layout_marginLeft="72dp"
             android:textColor="@color/black"
-            />
-        <TextView
-            android:id="@+id/hybrid_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hybrid"
-            android:layout_marginLeft="67dp"
-            android:textColor="@color/black"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ligth_button"
+            tools:ignore="MissingConstraints" />
+
         <TextView
             android:id="@+id/satelitte_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Satellite"
-            android:layout_marginLeft="55dp"
             android:textColor="@color/black"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.500"
+            app:layout_constraintStart_toEndOf="@+id/light_textView"
+            app:layout_constraintTop_toBottomOf="@+id/satellite_button"
+            tools:ignore="MissingConstraints" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
 
 
     </LinearLayout>
