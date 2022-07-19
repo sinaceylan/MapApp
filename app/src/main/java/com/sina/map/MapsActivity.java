@@ -23,10 +23,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sina.map.databinding.ActivityMapsBinding;
-
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -34,6 +32,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dark,light,satellite
     }
 
+    ModeTexts ModeText = new ModeTexts();
+    Dialog dialog;
     MapMode mode;
 
     private void updateMapStyle() {
@@ -43,24 +43,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         switch (mode) {
             case dark:
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
                 if (isLabelsEnabled) {
                     mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_dark_with_labels));
                 } else {
                     mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_dark_no_label));
                 }
-
                 break;
 
             case light:
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
                 if (isLabelsEnabled) {
                     mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_light_with_labels));
                 } else {
                     mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_light_no_label));
                 }
-
                 break;
 
             case satellite:
@@ -69,6 +65,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 } else {
                     mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
                 }
+                break;
+        }
+    }
+
+    private void updateDialogSelection(){
+        this.mode = loadMapMode();
+        Boolean isLabelsEnabled = loadMapLabelsEnabled();
+
+        TextView dark_textView = dialog.findViewById(R.id.dark_textView);
+        TextView light_textView = dialog.findViewById(R.id.light_textView);
+        TextView satelitte_textView = dialog.findViewById(R.id.satelitte_textView);
+
+        ImageButton darkButton = dialog.findViewById(R.id.dark_button);
+        ImageButton lightButton = dialog.findViewById(R.id.ligth_button);
+        ImageButton satelitteButton = dialog.findViewById(R.id.satellite_button);
+
+        Switch swbutton = dialog.findViewById(R.id.switch_button);
+        swbutton.setChecked(isLabelsEnabled);
+
+        switch (mode) {
+
+            case dark:
+                ModeText.darkButton_Attributes(dark_textView,light_textView,satelitte_textView);
+                lightButton.setBackground(getResources().getDrawable(R.drawable.buttons_default_background));
+                satelitteButton.setBackground(getResources().getDrawable(R.drawable.buttons_default_background));
+                darkButton.setBackground(getResources().getDrawable(R.drawable.selected_mode_background));
+                break;
+
+            case light:
+                ModeText.lightButton_Attributes(dark_textView,light_textView,satelitte_textView);
+                darkButton.setBackground(getResources().getDrawable(R.drawable.buttons_default_background));
+                satelitteButton.setBackground(getResources().getDrawable(R.drawable.buttons_default_background));
+                lightButton.setBackground(getResources().getDrawable(R.drawable.selected_mode_background));
+                break;
+
+            case satellite:
+                ModeText.satelitteButton_Attributes(dark_textView,light_textView,satelitte_textView);
+                darkButton.setBackground(getResources().getDrawable(R.drawable.buttons_default_background));
+                lightButton.setBackground(getResources().getDrawable(R.drawable.buttons_default_background));
+                satelitteButton.setBackground(getResources().getDrawable(R.drawable.selected_mode_background));
                 break;
         }
     }
@@ -86,15 +122,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private MapMode loadMapMode() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        String modeString = pref.getString("map_mode", "null");
+        String modeString = pref.getString("map_mode", null);
         if (modeString != null) {
-            MapMode mode = MapMode.valueOf(modeString);
-            return mode;
+            try {
+                MapMode mode = MapMode.valueOf(modeString);
+                return mode;
+            } catch (Exception e) {
+                return MapMode.satellite;
+            }
         } else {
-            return MapMode.dark;
+            return MapMode.satellite;
         }
     }
-
 
     private void saveMapLabelsEnabled(Boolean isLabelsEnabled) {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
@@ -109,17 +148,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return isEnabled;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         bottomsheet = findViewById(R.id.botttom_sheet);
@@ -128,22 +163,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
 
-                final Dialog dialog = new Dialog(MapsActivity.this);
+                dialog = new Dialog(MapsActivity.this);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.bottomsheetlayout);
-
-                TextView dark_textView = dialog.findViewById(R.id.dark_textView);
-                TextView light_textView = dialog.findViewById(R.id.light_textView);
-                TextView satelitte_textView = dialog.findViewById(R.id.satelitte_textView);
 
                 ImageButton darkButton = dialog.findViewById(R.id.dark_button);
                 ImageButton lightButton = dialog.findViewById(R.id.ligth_button);
                 ImageButton satelitteButton = dialog.findViewById(R.id.satellite_button);
                 Switch swbutton = dialog.findViewById(R.id.switch_button);
-
-                lightButton.setBackground(getResources().getDrawable(R.drawable.item_background));
-                satelitteButton.setBackground(getResources().getDrawable(R.drawable.item_background));
-                darkButton.setBackground(getResources().getDrawable(R.drawable.item_background));
 
                 swbutton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
                     @Override
@@ -152,90 +179,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         updateMapStyle();
                     }
                 });
-                swbutton.setChecked(false);
-
                 darkButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         saveMapMode(MapMode.dark);
                         updateMapStyle();
-
-                        dark_textView.setText("Dark");
-                        dark_textView.setTextSize(14);
-                        dark_textView.setTextColor(Color.parseColor("#2979FF"));
-
-                        light_textView.setText("Light");
-                        light_textView.setTextSize(14);
-                        light_textView.setTextColor(Color.parseColor("#000000"));
-
-                        satelitte_textView.setText("Satelitte");
-                        satelitte_textView.setTextSize(14);
-                        satelitte_textView.setTextColor(Color.parseColor("#000000"));
-
-                        //For Changing Border Color
-                        lightButton.setBackground(getResources().getDrawable(R.drawable.item_background));
-                        satelitteButton.setBackground(getResources().getDrawable(R.drawable.item_background));
-                        darkButton.setBackground(getResources().getDrawable(R.drawable.on_item_select));
-
-
+                        updateDialogSelection();
                     }
                 });
-
                 lightButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                        saveMapMode(MapMode.light);  ///////////////
+                        saveMapMode(MapMode.light);
                         updateMapStyle();
-
-                        dark_textView.setText("Dark");
-                        dark_textView.setTextSize(14);
-                        dark_textView.setTextColor(Color.parseColor("#000000"));
-
-                        light_textView.setText("Light");
-                        light_textView.setTextSize(14);
-                        light_textView.setTextColor(Color.parseColor("#2979FF"));
-
-                        satelitte_textView.setText("Satelitte");
-                        satelitte_textView.setTextSize(14);
-                        satelitte_textView.setTextColor(Color.parseColor("#000000"));
-
-                        //For Changing Border Color
-                        darkButton.setBackground(getResources().getDrawable(R.drawable.item_background));
-                        satelitteButton.setBackground(getResources().getDrawable(R.drawable.item_background));
-                        lightButton.setBackground(getResources().getDrawable(R.drawable.on_item_select));
-
+                        updateDialogSelection();
                     }
                 });
-
                 satelitteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                        saveMapMode(MapMode.satellite);   ///////////////
+                        saveMapMode(MapMode.satellite);
                         updateMapStyle();
-
-                        dark_textView.setText("Dark");
-                        dark_textView.setTextSize(14);
-                        dark_textView.setTextColor(Color.parseColor("#000000"));
-
-                        light_textView.setText("Light");
-                        light_textView.setTextSize(14);
-                        light_textView.setTextColor(Color.parseColor("#000000"));
-
-                        satelitte_textView.setText("Satelitte");
-                        satelitte_textView.setTextSize(14);
-                        satelitte_textView.setTextColor(Color.parseColor("#2979FF"));
-
-                        //For Changing Border Color
-                        darkButton.setBackground(getResources().getDrawable(R.drawable.item_background));
-                        lightButton.setBackground(getResources().getDrawable(R.drawable.item_background));
-                        satelitteButton.setBackground(getResources().getDrawable(R.drawable.on_item_select));
-
+                        updateDialogSelection();
                     }
                 });
-
+                updateDialogSelection();
                 dialog.show();
                 dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -243,21 +211,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 dialog.getWindow().setGravity(Gravity.BOTTOM);
             }
         });
-
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         mMap = googleMap;
-
-        updateMapStyle();
-
         mMap.getUiSettings().setRotateGesturesEnabled(true);
-
         LatLng location = new LatLng(36.74757, 28.94087);
-        mMap.addMarker(new MarkerOptions().position(location));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 14.7f));
+        updateMapStyle();
     }
 }

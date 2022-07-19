@@ -28,7 +28,7 @@
         android:layout_marginTop="83dp"
         android:layout_marginEnd="0dp"
         android:backgroundTint="@color/white"
-        android:src="@drawable/ic_baseline_menu_24" />
+        android:src="@drawable/menu_icon" />
 
 
 </RelativeLayout>
