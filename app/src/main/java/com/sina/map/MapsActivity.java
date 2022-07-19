@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,9 +39,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void updateMapStyle() {
         this.mode = loadMapMode();
         Boolean isLabelsEnabled = loadMapLabelsEnabled();
-
-        Log.d("MAPMODE", mode.toString());
-        Log.d("MAPMODE", isLabelsEnabled.toString());
 
         switch (mode) {
             case dark:
