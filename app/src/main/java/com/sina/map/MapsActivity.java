@@ -2,11 +2,11 @@ package com.sina.map;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,31 +34,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private enum MapMode{
         dark,light,satellite
     }
-    private boolean isLabelsEnabled;
+
+    MapMode mode;
 
     private void updateMapStyle() {
-        MapMode mode = MapMode.dark;
-        Boolean isLabelsEnabled = true;
+        this.mode = loadMapMode();
+        Boolean isLabelsEnabled = loadMapLabelsEnabled();
+
+        Log.d("MAPMODE", mode.toString());
+        Log.d("MAPMODE", isLabelsEnabled.toString());
 
         switch (mode) {
             case dark:
+                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
                 if (isLabelsEnabled) {
-
+                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_dark_with_labels));
                 } else {
-
+                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_dark_no_label));
                 }
+
+                break;
+
             case light:
+                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
                 if (isLabelsEnabled) {
-
+                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_light_with_labels));
                 } else {
-
+                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_light_no_label));
                 }
+
+                break;
+
             case satellite:
                 if (isLabelsEnabled) {
-
+                    mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 } else {
-
+                    mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
                 }
+                break;
         }
     }
 
@@ -66,41 +81,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
 
-
     private void saveMapMode(MapMode mode) {
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
         editor.putString("map_mode", mode.toString());
         editor.apply();
     }
 
-
     private MapMode loadMapMode() {
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        String modeString = sharedPref.getString("map_mode", "null");
-            if (modeString != null) {
-                MapMode mode = MapMode.valueOf( modeString );
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        String modeString = pref.getString("map_mode", "null");
+        if (modeString != null) {
+            MapMode mode = MapMode.valueOf(modeString);
             return mode;
-            } else {
-                 return MapMode.dark;
-    }}
+        } else {
+            return MapMode.dark;
+        }
+    }
 
-    /*
+
     private void saveMapLabelsEnabled(Boolean isLabelsEnabled) {
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean("map_labels_enabled", isLabelsEnabled)
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean("map_labels_enabled", isLabelsEnabled);
         editor.apply();
     }
-    */
 
-    //private Boolean loadMapLabelsEnabled() {
-    // TODO: if value is null, default should be true
-    /*
-    Boolean isEnabled = sharedPreference.getBoolean("map_labels_enabled");
+    private Boolean loadMapLabelsEnabled() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        Boolean isEnabled = pref.getBoolean("map_labels_enabled",true);
         return isEnabled;
-     */
-    //}
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,11 +149,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 satelitteButton.setBackground(getResources().getDrawable(R.drawable.item_background));
                 darkButton.setBackground(getResources().getDrawable(R.drawable.item_background));
 
+                swbutton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        saveMapLabelsEnabled(isChecked);
+                        updateMapStyle();
+                    }
+                });
+                swbutton.setChecked(false);
+
                 darkButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        saveMapMode(MapMode.dark); ///////////////
+                        saveMapMode(MapMode.dark);
+                        updateMapStyle();
 
                         dark_textView.setText("Dark");
                         dark_textView.setTextSize(14);
@@ -157,23 +180,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         //For Changing Border Color
                         lightButton.setBackground(getResources().getDrawable(R.drawable.item_background));
                         satelitteButton.setBackground(getResources().getDrawable(R.drawable.item_background));
-
                         darkButton.setBackground(getResources().getDrawable(R.drawable.on_item_select));
-                        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_dark_no_label));
 
-                        swbutton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-                            @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                                if(isChecked){
-                                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_dark_with_labels));
-                                }else{
-                                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_dark_no_label));
-                                }
-                            }
-                        });
-                        swbutton.setChecked(false);
                     }
                 });
 
@@ -182,6 +191,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onClick(View v) {
 
                         saveMapMode(MapMode.light);  ///////////////
+                        updateMapStyle();
 
                         dark_textView.setText("Dark");
                         dark_textView.setTextSize(14);
@@ -198,22 +208,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         //For Changing Border Color
                         darkButton.setBackground(getResources().getDrawable(R.drawable.item_background));
                         satelitteButton.setBackground(getResources().getDrawable(R.drawable.item_background));
-
                         lightButton.setBackground(getResources().getDrawable(R.drawable.on_item_select));
-                        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_light_no_label));
 
-                        swbutton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-                            @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                if(isChecked){
-                                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_light_with_labels));
-                                }else{
-                                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(MapsActivity.this,R.raw.map_style_light_no_label));
-                                }
-                            }
-                        });
-                        swbutton.setChecked(false);
                     }
                 });
 
@@ -222,6 +218,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onClick(View v) {
 
                         saveMapMode(MapMode.satellite);   ///////////////
+                        updateMapStyle();
 
                         dark_textView.setText("Dark");
                         dark_textView.setTextSize(14);
@@ -238,22 +235,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         //For Changing Border Color
                         darkButton.setBackground(getResources().getDrawable(R.drawable.item_background));
                         lightButton.setBackground(getResources().getDrawable(R.drawable.item_background));
-
                         satelitteButton.setBackground(getResources().getDrawable(R.drawable.on_item_select));
-                        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
-                        swbutton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-                            @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                                if(isChecked){
-                                    mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-                                }else{
-                                    mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                                }
-                            }
-                        });
-                        swbutton.setChecked(false);
                     }
                 });
 
@@ -272,7 +255,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap = googleMap;
 
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        updateMapStyle();
+
         mMap.getUiSettings().setRotateGesturesEnabled(true);
 
         LatLng location = new LatLng(36.74757, 28.94087);
