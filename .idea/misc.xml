@@ -15,9 +15,10 @@
         <entry key="..\:/Map/app/src/main/res/drawable/ic_launcher_background.xml" value="0.157" />
         <entry key="..\:/Map/app/src/main/res/drawable/item_background.xml" value="0.2595" />
         <entry key="..\:/Map/app/src/main/res/drawable/on_item_select.xml" value="0.2595" />
+        <entry key="..\:/Map/app/src/main/res/drawable/selected_mode_background.xml" value="0.199" />
         <entry key="..\:/Map/app/src/main/res/drawable/switch_background.xml" value="0.1475" />
         <entry key="..\:/Map/app/src/main/res/layout/activity_maps.xml" value="0.264" />
-        <entry key="..\:/Map/app/src/main/res/layout/bottomsheetlayout.xml" value="0.4" />
+        <entry key="..\:/Map/app/src/main/res/layout/bottomsheetlayout.xml" value="0.23514851485148514" />
         <entry key="..\:/Map/app/src/main/res/layout/s.xml" value="0.31521739130434784" />
         <entry key="..\:/Map/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.21" />
       </map>

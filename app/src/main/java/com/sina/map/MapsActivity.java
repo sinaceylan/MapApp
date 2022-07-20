@@ -6,10 +6,12 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
@@ -26,6 +28,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sina.map.databinding.ActivityMapsBinding;
 
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private enum MapMode{
@@ -39,8 +42,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void updateMapStyle() {
         this.mode = loadMapMode();
         Boolean isLabelsEnabled = loadMapLabelsEnabled();
-
+        Log.d("MODES",mode.toString());
         switch (mode) {
+
             case dark:
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 if (isLabelsEnabled) {
@@ -80,8 +84,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ImageButton darkButton = dialog.findViewById(R.id.dark_button);
         ImageButton lightButton = dialog.findViewById(R.id.ligth_button);
         ImageButton satelitteButton = dialog.findViewById(R.id.satellite_button);
-
         Switch swbutton = dialog.findViewById(R.id.switch_button);
+
         swbutton.setChecked(isLabelsEnabled);
 
         switch (mode) {
@@ -118,6 +122,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("map_mode", mode.toString());
         editor.apply();
+
     }
 
     private MapMode loadMapMode() {
@@ -133,6 +138,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             return MapMode.satellite;
         }
+
     }
 
     private void saveMapLabelsEnabled(Boolean isLabelsEnabled) {
@@ -140,12 +146,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SharedPreferences.Editor editor = pref.edit();
         editor.putBoolean("map_labels_enabled", isLabelsEnabled);
         editor.apply();
+
+        Log.d("LOGG",isLabelsEnabled.toString());
     }
 
     private Boolean loadMapLabelsEnabled() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         Boolean isEnabled = pref.getBoolean("map_labels_enabled",true);
+
+        Log.d("ENABLED",isEnabled.toString());
         return isEnabled;
+
     }
 
     @Override
@@ -171,6 +182,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ImageButton lightButton = dialog.findViewById(R.id.ligth_button);
                 ImageButton satelitteButton = dialog.findViewById(R.id.satellite_button);
                 Switch swbutton = dialog.findViewById(R.id.switch_button);
+
+                updateDialogSelection();
 
                 swbutton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
                     @Override
@@ -203,12 +216,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         updateDialogSelection();
                     }
                 });
-                updateDialogSelection();
+
                 dialog.show();
                 dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                 dialog.getWindow().setGravity(Gravity.BOTTOM);
+
+                WindowManager.LayoutParams dimSetting = dialog.getWindow().getAttributes();
+                dimSetting.dimAmount = 0.1f;
+                dialog.getWindow().setAttributes(dimSetting);
             }
         });
     }
